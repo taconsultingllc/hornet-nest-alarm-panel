@@ -25,8 +25,8 @@ ota:
   - platform: esphome
 
 dashboard_import:
-  package_import_url: https://github.com/taconsultingllc/hornet-nest-alarm-panel/blob/a8a504767d610f6f2d1ee52c044a0805c5fc00dc/hornet-nest-alarm-panel.factory.yaml
-  import_full_config: false # or true
+  package_import_url: github://taconsultingllc/hornet-nest-alarm-panel/hornet-nest-alarm-panel.factory.yaml@main
+  import_full_config: true
     
 wifi:
   ap:
