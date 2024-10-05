@@ -1,0 +1,783 @@
+substitutions:
+  name: "hornet-nest-alarm-panel"
+  friendly_name: "Hornet Nest Alarm Panel"
+
+esphome:
+  name: "${name}"
+  friendly_name: "${friendly_name}"
+  name_add_mac_suffix: true
+  project:
+    name: esphome.hornet-nest-alarm-panel
+    version: "1.0"
+
+esp32:
+  board: wesp32
+  framework:
+    type: arduino
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+ota:
+  - platform: esphome
+
+dashboard_import:
+  package_import_url: github://esphome/esphome-project-template/project-template-esp32.yaml@v6
+  import_full_config: false # or true
+    
+wifi:
+  ap:
+    password: "12345678"
+
+captive_portal:
+
+ethernet:
+  type: RTL8201
+  mdc_pin: GPIO16
+  mdio_pin: GPIO17
+  clk_mode: GPIO0_IN
+  phy_addr: 0
+  phy_registers:
+    - address: 0x10
+      value: 0x1FFA
+      page_id: 0x07
+
+web_server:
+  port: 80
+  version: 3
+
+i2c:
+  sda: 15
+  scl: 4
+  scan: true
+  id: bus_a
+  frequency: 200kHz
+
+mcp23017:
+  - id: 'mcp23017_1'
+    address: 0x20
+  - id: 'mcp23017_2'
+    address: 0x21
+  - id: 'mcp23017_3'
+    address: 0x22    
+         
+binary_sensor:
+# Start Fuse Monitoring
+  - platform: gpio
+    id: Fuse12V
+    name: 12V Fuse Status
+    icon: mdi:fuse
+    pin: 
+      number: GPIO34
+      mode:
+        input: true
+        pullup: false
+      inverted: false
+    device_class: problem
+    on_state: 
+      if:
+        condition:
+          - binary_sensor.is_on: Fuse12V
+        then:
+          - switch.turn_on: alarm4
+        else:
+          - switch.turn_off: alarm4    
+    filters:
+      - delayed_on: 500ms
+      - delayed_off: 500ms
+
+  - platform: gpio
+    id: Fuse3V
+    name: 3.3V Fuse Status
+    icon: mdi:fuse
+    pin: 
+      number: GPIO36
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    device_class: problem
+    on_state: 
+      if:
+        condition:
+          - binary_sensor.is_on: Fuse3V
+        then:
+          - switch.turn_on: alarm4
+        else:
+          - switch.turn_off: alarm4 
+    filters:
+      - delayed_on: 500ms
+      - delayed_off: 500ms
+
+# Start MCP23017 Chip number 1 - 14 zones
+  - platform: gpio
+    name: Zone 01
+    icon: mdi:door
+    pin:
+      mcp23xxx: mcp23017_1
+      number: 8
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    device_class: door
+    filters:
+      - delayed_on: 500ms
+      - delayed_off: 500ms
+
+  - platform: gpio
+    name: Zone 02
+    icon: mdi:window-closed
+    pin:
+      mcp23xxx: mcp23017_1
+      number: 9
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    device_class: window
+    filters:
+      - delayed_on: 500ms
+      - delayed_off: 500ms
+
+  - platform: gpio
+    name: Zone 03
+    icon: mdi:motion-sensor
+    pin:
+      mcp23xxx: mcp23017_1
+      number: 10
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    device_class: motion
+    filters:
+      - delayed_on: 500ms
+      - delayed_off: 500ms
+
+  - platform: gpio
+    name: Zone 04
+    icon: mdi:door
+    pin:
+      mcp23xxx: mcp23017_1
+      number: 11
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    device_class: door
+    filters:
+      - delayed_on: 500ms
+      - delayed_off: 500ms
+
+  - platform: gpio
+    name: Zone 05
+    icon: mdi:window-closed
+    pin:
+      mcp23xxx: mcp23017_1
+      number: 12
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    device_class: window
+    filters:
+      - delayed_on: 500ms
+      - delayed_off: 500ms
+
+  - platform: gpio
+    name: Zone 06
+    icon: mdi:window-closed
+    pin:
+      mcp23xxx: mcp23017_1
+      number: 13
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    device_class: window
+    filters:
+      - delayed_on: 500ms
+      - delayed_off: 500ms
+
+  - platform: gpio
+    name: Zone 07
+    icon: mdi:window-closed
+    pin:
+      mcp23xxx: mcp23017_1
+      number: 14
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    device_class: window
+    filters:
+      - delayed_on: 500ms
+      - delayed_off: 500ms
+
+  - platform: gpio
+    name: Zone 08
+    icon: mdi:window-closed
+    pin:
+      mcp23xxx: mcp23017_1
+      number: 0
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    device_class: window
+    filters:
+      - delayed_on: 500ms
+      - delayed_off: 500ms
+
+  - platform: gpio
+    name: Zone 09
+    icon: mdi:window-closed
+    pin:
+      mcp23xxx: mcp23017_1
+      number: 1
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    device_class: window
+    filters:
+      - delayed_on: 500ms
+      - delayed_off: 500ms
+
+  - platform: gpio
+    name: Zone 10
+    icon: mdi:window-closed
+    pin:
+      mcp23xxx: mcp23017_1
+      number: 2
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    device_class: window
+    filters:
+      - delayed_on: 500ms
+      - delayed_off: 500ms
+
+  - platform: gpio
+    name: Zone 11
+    icon: mdi:window-closed
+    pin:
+      mcp23xxx: mcp23017_1
+      number: 3
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    device_class: window
+    filters:
+      - delayed_on: 500ms
+      - delayed_off: 500ms
+
+  - platform: gpio
+    name: Zone 12
+    icon: mdi:window-closed
+    pin:
+      mcp23xxx: mcp23017_1
+      number: 4
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    device_class: window
+    filters:
+      - delayed_on: 500ms
+      - delayed_off: 500ms
+
+  - platform: gpio
+    name: Zone 13
+    icon: mdi:window-closed
+    pin:
+      mcp23xxx: mcp23017_1
+      number: 5
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    device_class: window
+    filters:
+      - delayed_on: 500ms
+      - delayed_off: 500ms
+
+  - platform: gpio
+    name: Zone 14
+    icon: mdi:window-closed
+    pin:
+      mcp23xxx: mcp23017_1
+      number: 6
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    device_class: window
+    filters:
+      - delayed_on: 500ms
+      - delayed_off: 500ms
+# End MCP23017 Chip number 1
+
+# Start MCP23017 Chip number 2 - 14 zones
+  - platform: gpio
+    name: Zone 15
+    icon: mdi:door
+    pin:
+      mcp23xxx: mcp23017_2
+      number: 8
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    device_class: door
+    filters:
+      - delayed_on: 500ms
+      - delayed_off: 500ms
+
+  - platform: gpio
+    name: Zone 16
+    icon: mdi:door
+    pin:
+      mcp23xxx: mcp23017_2
+      number: 9
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    device_class: door
+    filters:
+      - delayed_on: 500ms
+      - delayed_off: 500ms
+
+  - platform: gpio
+    name: Zone 17
+    icon: mdi:door
+    pin:
+      mcp23xxx: mcp23017_2
+      number: 10
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    device_class: door
+    filters:
+      - delayed_on: 500ms
+      - delayed_off: 500ms
+
+  - platform: gpio
+    name: Zone 18
+    icon: mdi:door
+    pin:
+      mcp23xxx: mcp23017_2
+      number: 11
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    device_class: door
+    filters:
+      - delayed_on: 500ms
+      - delayed_off: 500ms
+
+  - platform: gpio
+    name: Zone 19
+    icon: mdi:window-closed
+    pin:
+      mcp23xxx: mcp23017_2
+      number: 12
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    device_class: window
+    filters:
+      - delayed_on: 500ms
+      - delayed_off: 500ms
+
+  - platform: gpio
+    name: Zone 20
+    icon: mdi:window-closed
+    pin:
+      mcp23xxx: mcp23017_2
+      number: 13
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    device_class: window
+    filters:
+      - delayed_on: 500ms
+      - delayed_off: 500ms
+
+  - platform: gpio
+    name: Zone 21
+    icon: mdi:window-closed
+    pin:
+      mcp23xxx: mcp23017_2
+      number: 14
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    device_class: window
+    filters:
+      - delayed_on: 500ms
+      - delayed_off: 500ms
+
+  - platform: gpio
+    name: Zone 22
+    icon: mdi:window-closed
+    pin:
+      mcp23xxx: mcp23017_2
+      number: 0
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    device_class: window
+    filters:
+      - delayed_on: 500ms
+      - delayed_off: 500ms
+
+  - platform: gpio
+    name: Zone 23
+    icon: mdi:window-closed
+    pin:
+      mcp23xxx: mcp23017_2
+      number: 1
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    device_class: window
+    filters:
+      - delayed_on: 500ms
+      - delayed_off: 500ms
+
+  - platform: gpio
+    name: Zone 24
+    icon: mdi:window-closed
+    pin:
+      mcp23xxx: mcp23017_2
+      number: 2
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    device_class: window
+    filters:
+      - delayed_on: 500ms
+      - delayed_off: 500ms
+
+  - platform: gpio
+    name: Zone 25
+    icon: mdi:window-closed
+    pin:
+      mcp23xxx: mcp23017_2
+      number: 3
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    device_class: window
+    filters:
+      - delayed_on: 500ms
+      - delayed_off: 500ms
+
+  - platform: gpio
+    name: Zone 26
+    icon: mdi:window-closed
+    pin:
+      mcp23xxx: mcp23017_2
+      number: 4
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    device_class: window
+    filters:
+      - delayed_on: 500ms
+      - delayed_off: 500ms
+
+  - platform: gpio
+    name: Zone 27
+    icon: mdi:window-closed
+    pin:
+      mcp23xxx: mcp23017_2
+      number: 5
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    device_class: window
+    filters:
+      - delayed_on: 500ms
+      - delayed_off: 500ms
+
+  - platform: gpio
+    name: Zone 28
+    icon: mdi:window-closed
+    pin:
+      mcp23xxx: mcp23017_2
+      number: 6
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    device_class: window
+    filters:
+      - delayed_on: 500ms
+      - delayed_off: 500ms
+# End MCP23017 Chip number 2
+
+# Start MCP23017 Chip number 3 - 14 zones
+  - platform: gpio
+    name: Zone 29
+    icon: mdi:door
+    pin:
+      mcp23xxx: mcp23017_3
+      number: 8
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    device_class: door
+    filters:
+      - delayed_on: 500ms
+      - delayed_off: 500ms
+
+  - platform: gpio
+    name: Zone 30
+    icon: mdi:door
+    pin:
+      mcp23xxx: mcp23017_3
+      number: 9
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    device_class: door
+    filters:
+      - delayed_on: 500ms
+      - delayed_off: 500ms
+
+  - platform: gpio
+    name: Zone 31
+    icon: mdi:door
+    pin:
+      mcp23xxx: mcp23017_3
+      number: 10
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    device_class: door
+    filters:
+      - delayed_on: 500ms
+      - delayed_off: 500ms
+
+  - platform: gpio
+    name: Zone 32
+    icon: mdi:door
+    pin:
+      mcp23xxx: mcp23017_3
+      number: 11
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    device_class: door
+    filters:
+      - delayed_on: 500ms
+      - delayed_off: 500ms
+
+  - platform: gpio
+    name: Zone 33
+    icon: mdi:window-closed
+    pin:
+      mcp23xxx: mcp23017_3
+      number: 12
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    device_class: window
+    filters:
+      - delayed_on: 500ms
+      - delayed_off: 500ms
+
+  - platform: gpio
+    name: Zone 34
+    icon: mdi:window-closed
+    pin:
+      mcp23xxx: mcp23017_3
+      number: 13
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    device_class: window
+    filters:
+      - delayed_on: 500ms
+      - delayed_off: 500ms
+
+  - platform: gpio
+    name: Zone 35
+    icon: mdi:window-closed
+    pin:
+      mcp23xxx: mcp23017_3
+      number: 14
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    device_class: window
+    filters:
+      - delayed_on: 500ms
+      - delayed_off: 500ms
+
+  - platform: gpio
+    name: Zone 36
+    icon: mdi:window-closed
+    pin:
+      mcp23xxx: mcp23017_3
+      number: 0
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    device_class: window
+    filters:
+      - delayed_on: 500ms
+      - delayed_off: 500ms
+
+  - platform: gpio
+    name: Zone 37
+    icon: mdi:window-closed
+    pin:
+      mcp23xxx: mcp23017_3
+      number: 1
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    device_class: window
+    filters:
+      - delayed_on: 500ms
+      - delayed_off: 500ms
+
+  - platform: gpio
+    name: Zone 38
+    icon: mdi:window-closed
+    pin:
+      mcp23xxx: mcp23017_3
+      number: 2
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    device_class: window
+    filters:
+      - delayed_on: 500ms
+      - delayed_off: 500ms
+
+  - platform: gpio
+    name: Zone 39
+    icon: mdi:window-closed
+    pin:
+      mcp23xxx: mcp23017_3
+      number: 3
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    device_class: window
+    filters:
+      - delayed_on: 500ms
+      - delayed_off: 500ms
+
+  - platform: gpio
+    name: Zone 40
+    icon: mdi:window-closed
+    pin:
+      mcp23xxx: mcp23017_3
+      number: 4
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    device_class: window
+    filters:
+      - delayed_on: 500ms
+      - delayed_off: 500ms
+
+  - platform: gpio
+    name: Zone 41
+    icon: mdi:window-closed
+    pin:
+      mcp23xxx: mcp23017_3
+      number: 5
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    device_class: window
+    filters:
+      - delayed_on: 500ms
+      - delayed_off: 500ms
+
+  - platform: gpio
+    name: Zone 42
+    icon: mdi:window-closed
+    pin:
+      mcp23xxx: mcp23017_3
+      number: 6
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    device_class: window
+    filters:
+      - delayed_on: 500ms
+      - delayed_off: 500ms
+# End MCP23017 Chip number 3
+
+# GPIO pins from the wESP32 board for outputs
+switch:   
+  - platform: gpio
+    pin: 
+      number: 13
+      inverted: False
+    id: alarm1
+    name: Output 1    
+    icon: mdi:bullhorn
+
+  - platform: gpio
+    pin: 
+      number: 18
+      inverted: False 
+    id: alarm2
+    name: Output 2  
+    icon: mdi:bullhorn
+
+  - platform: gpio
+    pin: 
+      number: 32
+      inverted: False 
+    id: alarm3
+    name: Output 3  
+    icon: mdi:bullhorn
+
+  - platform: gpio
+    pin: 
+      number: 23
+      inverted: False 
+    id: alarm4
+    name: Piezo Buzzer   
+    icon: mdi:bullhorn
