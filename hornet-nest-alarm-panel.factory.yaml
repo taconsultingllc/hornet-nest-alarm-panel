@@ -27,12 +27,6 @@ ota:
 dashboard_import:
   package_import_url: github://taconsultingllc/hornet-nest-alarm-panel/hornet-nest-alarm-panel.factory.yaml@main
   import_full_config: true
-    
-wifi:
-  ap:
-    password: "12345678"
-
-captive_portal:
 
 ethernet:
   type: RTL8201
