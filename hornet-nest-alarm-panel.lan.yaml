@@ -54,8 +54,8 @@ substitutions:
  
   sensor_debounce_time: 500ms
   
-  #sensor_inverted: true  #For NO (Normally Open) Sensors
-  sensor_inverted: false  #For NC (Normally Closed) Senors
+  #sensor_inverted: "true"  #For NO (Normally Open) Sensors
+  sensor_inverted: "false"  #For NC (Normally Closed) Senors
 
 esphome:
   name: "${name}"
