@@ -1,0 +1,172 @@
+binary_sensor:
+
+  # Start MCP23017 Chip number 3 - 14 zones
+  - platform: gpio
+    name: Zone 29
+    pin:
+      mcp23xxx: mcp23017_3
+      number: 8
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  - platform: gpio
+    name: Zone 30
+    pin:
+      mcp23xxx: mcp23017_3
+      number: 9
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  - platform: gpio
+    name: Zone 31
+    pin:
+      mcp23xxx: mcp23017_3
+      number: 10
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  - platform: gpio
+    name: Zone 32
+    pin:
+      mcp23xxx: mcp23017_3
+      number: 11
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  - platform: gpio
+    name: Zone 33
+    pin:
+      mcp23xxx: mcp23017_3
+      number: 12
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  - platform: gpio
+    name: Zone 34
+    pin:
+      mcp23xxx: mcp23017_3
+      number: 13
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  - platform: gpio
+    name: Zone 35
+    pin:
+      mcp23xxx: mcp23017_3
+      number: 14
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  - platform: gpio
+    name: Zone 36
+    pin:
+      mcp23xxx: mcp23017_3
+      number: 0
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  - platform: gpio
+    name: Zone 37
+    pin:
+      mcp23xxx: mcp23017_3
+      number: 1
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  - platform: gpio
+    name: Zone 38
+    pin:
+      mcp23xxx: mcp23017_3
+      number: 2
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  - platform: gpio
+    name: Zone 39
+    pin:
+      mcp23xxx: mcp23017_3
+      number: 3
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  - platform: gpio
+    name: Zone 40
+    pin:
+      mcp23xxx: mcp23017_3
+      number: 4
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  - platform: gpio
+    name: Zone 41
+    pin:
+      mcp23xxx: mcp23017_3
+      number: 5
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  - platform: gpio
+    name: Zone 42
+    pin:
+      mcp23xxx: mcp23017_3
+      number: 6
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  # End MCP23017 Chip number 3

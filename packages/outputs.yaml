@@ -1,0 +1,33 @@
+# GPIO pins from the wESP32 board for outputs
+switch:
+  - platform: gpio
+    pin:
+      number: 13
+      inverted: false
+    id: alarm1
+    name: Output 1
+    icon: mdi:bullhorn
+
+  - platform: gpio
+    pin:
+      number: 18
+      inverted: false
+    id: alarm2
+    name: Output 2
+    icon: mdi:bullhorn
+
+  - platform: gpio
+    pin:
+      number: 32
+      inverted: false
+    id: alarm3
+    name: Output 3
+    icon: mdi:bullhorn
+
+  - platform: gpio
+    pin:
+      number: 23
+      inverted: false
+    id: alarm4
+    name: Piezo Buzzer
+    icon: mdi:bullhorn

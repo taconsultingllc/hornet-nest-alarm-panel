@@ -1,0 +1,14 @@
+i2c:
+  sda: 15
+  scl: 4
+  scan: true
+  id: bus_a
+  frequency: 200kHz
+
+mcp23017:
+  - id: mcp23017_1
+    address: 0x20
+  - id: mcp23017_2
+    address: 0x21
+  - id: mcp23017_3
+    address: 0x22

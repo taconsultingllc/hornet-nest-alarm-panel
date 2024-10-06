@@ -1,0 +1,40 @@
+substitutions:
+  name: "hornet-nest-alarm-panel"
+  friendly_name: "Hornet Nest Alarm Panel"
+
+esphome:
+  name: "${name}"
+  friendly_name: "${friendly_name}"
+  name_add_mac_suffix: true
+  project:
+    name: esphome.hornet-nest-alarm-panel
+    version: "1.0"
+
+esp32:
+  board: wesp32
+  framework:
+    type: arduino
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+ota:
+  - platform: esphome
+
+dashboard_import:
+  package_import_url: github://taconsultingllc/hornet-nest-alarm-panel/hornet-nest-alarm-panel.factory.yaml@main
+  import_full_config: true
+
+ethernet:
+  type: RTL8201
+  mdc_pin: GPIO16
+  mdio_pin: GPIO17
+  clk_mode: GPIO0_IN
+  phy_addr: 0
+  phy_registers:
+    - address: 0x10
+      value: 0x1FFA
+      page_id: 0x07

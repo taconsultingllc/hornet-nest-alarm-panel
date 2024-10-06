@@ -1,0 +1,65 @@
+text_sensor:
+  - platform: ethernet_info
+    ip_address:
+      name: Ethernet IP Address
+      entity_category: diagnostic
+  - platform: template
+    name: Device ID
+    id: device_id
+    entity_category: diagnostic
+    update_interval: never
+  - platform: version
+    name: ESPHome Version
+    hide_timestamp: true
+    
+sensor:
+  - platform: uptime
+    name: Uptime
+    id: uptime_sensor
+    entity_category: diagnostic
+
+binary_sensor:
+  # Start Fuse Monitoring
+  - platform: gpio
+    id: Fuse12V
+    name: 12V Fuse Status
+    icon: mdi:fuse
+    pin:
+      number: GPIO34
+      mode:
+        input: true
+        pullup: false
+      inverted: false
+    device_class: problem
+    on_state:
+      if:
+        condition:
+        - binary_sensor.is_on: Fuse12V
+        then:
+        - switch.turn_on: alarm4
+        else:
+        - switch.turn_off: alarm4
+    filters:
+        - delayed_on_off: $sensor_debounce_time
+
+  - platform: gpio
+    id: Fuse3V
+    name: 3.3V Fuse Status
+    icon: mdi:fuse
+    pin:
+      number: GPIO36
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    device_class: problem
+    on_state:
+      if:
+        condition:
+        - binary_sensor.is_on: Fuse3V
+        then:
+        - switch.turn_on: alarm4
+        else:
+        - switch.turn_off: alarm4
+    filters:
+        - delayed_on_off: $sensor_debounce_time
