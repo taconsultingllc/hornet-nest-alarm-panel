@@ -140,7 +140,11 @@ dashboard_import:
 ## This component and the Ethernet component may NOT be used simultaneously, 
 ## even if both are physically available.
 ## more: https://esphome.io/components/ethernet.html
-## more: https://wesp32.com/files/wESP32-Product-Brief.pdf
+##
+## CAPTIVE PORTAL
+## This component enables a Wi-Fi hotspot that can be used to select your Wi-Fi
+## network and add your credentials.
+## more: https://esphome.io/components/captive_portal
 ##
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
 wifi:

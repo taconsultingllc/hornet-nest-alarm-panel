@@ -4,13 +4,16 @@ This repository houses the officially supported **ESPHome** firmware configurati
 
 ## Quick Start
 
-Get started quickly by flashing your Hornet Nest Alarm Panel with ESPHome firmware:
+Get started quickly by adopting and flashing your Hornet Nest Alarm Panel with the latest ESPHome firmware:
 
-1. Power on the Hornet Nest Alarm Panel.
-2. Connect to the panel’s WiFi setup network named "hornet-nest-XXXXXX" (where XXXXXX is a unique hexadecimal identifier).
-3. Select your home WiFi network and enter your WiFi password.
+1. Plug a PoE powered ethernet cable into the Hornet Nest Alarm Panel.
+2. Open the **ESPHome Dashboard** and locate the device "hornet-nest-XXXXXX" (where XXXXXX is a unique hexadecimal identifier).
+3. Click on the **Adopt** option on the device.
+4. The **Adopt Device** dialog will open.  You can rename your device if desired and then click the **Adopt** option again.
+5. The **Configuration Created** dialog will open and indicate that a new configuration needs to be installed on the device, click the **Install** button.
+6. ESPHome will begin to compile the new firmware. When the line **INFO Sucessfully uploaded program.** is diplayed, click **STOP** to close the window.
 4. Discover the Hornet Nest Alarm Panel in **Home Assistant** > **Settings** > **Devices & Services**.
-5. (Optional) Customize the firmware using **ESPHome Dashboard** for more advanced settings (see **ESPHome add-on**).
+5. Click **Configure** on the new device to add it into Home Assistant.
 
 ## Changes and Release Notes
 
