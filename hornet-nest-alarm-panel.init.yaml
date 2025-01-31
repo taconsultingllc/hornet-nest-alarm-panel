@@ -101,7 +101,7 @@ ota:
   - platform: esphome
 
 dashboard_import:
-  package_import_url: github://taconsultingllc/hornet-nest-alarm-panel/hornet-nest-alarm-panel.lan.yaml@main
+  package_import_url: github://taconsultingllc/hornet-nest-alarm-panel/hnap-v1.1-lan.yaml@main
   import_full_config: true
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##

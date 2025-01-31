@@ -122,15 +122,15 @@ packages:
     ref: main
     refresh: 5min
     files:
-      - packages/mcp23017-config.yaml
-      - packages/diagnostics.yaml
-      - packages/inputs-1-14.yaml
-      - packages/inputs-15-28.yaml
-      - packages/inputs-29-42.yaml
-      - packages/outputs.yaml
+      - packages/hnap-rev1.1-mcp23017-config.yaml
+      - packages/hnap-rev1.1-diagnostics.yaml
+      - packages/hnap-rev1.1-inputs-1-14.yaml
+      - packages/hnap-rev1.1-inputs-15-28.yaml
+      - packages/hnap-rev1.1-inputs-29-42.yaml
+      - packages/hnap-rev1.1-outputs.yaml
 
 dashboard_import:
-  package_import_url: github://taconsultingllc/hornet-nest-alarm-panel/hornet-nest-alarm-panel.lan.yaml@main
+  package_import_url: github://taconsultingllc/hornet-nest-alarm-panel/hnap-v1.1-lan.yaml@main
   import_full_config: true
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
