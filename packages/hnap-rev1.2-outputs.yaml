@@ -84,7 +84,7 @@ switch:
       - delay: 5s
       - switch.turn_on: smoke_pwr
 
-outputs:
+output:
   # Piezo Buzzer - wESP32 IO23
   #- platform: gpio
   #  pin: 

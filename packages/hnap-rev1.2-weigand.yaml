@@ -123,15 +123,3 @@ key_collector:
       - logger.log:
           format: "input timeout: '%s', started by '%c'"
           args: [ 'x.c_str()', "(start == 0 ? '~' : start)" ]
-
-switch:
- - platform: template
-   name: reader01
-   id: reader01
-   optimistic: true
-   lambda: return id(reader01).state;
- - platform: template
-   name: reader02
-   id: reader02
-   optimistic: true
-   lambda: return id(reader02).state;
