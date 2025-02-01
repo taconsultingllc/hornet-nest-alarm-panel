@@ -69,7 +69,7 @@ sensor:
 
 # Define Piezo Buzzer as Output for RTTTL
 rtttl:
-  output: buzzer
+  output: buzzer_output
 
 wiegand:
   - id: mykeypad
