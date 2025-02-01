@@ -64,6 +64,11 @@ esphome:
   project:
     name: taconsulting.hornet-nest-alarm-panel
     version: "1.0"
+  on_boot:
+    then:
+      - text_sensor.template.publish:
+          id: device_id
+          state: !lambda 'return get_mac_address();'
 
 esp32:
   board: wesp32
@@ -100,30 +105,58 @@ api:
 ota:
   - platform: esphome
 
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
+##
+## PACKAGES
+## All definitions from packages will be merged with your device’s main 
+## configuration in a non-destructive way. This allows overriding (parts of) 
+## configuration contained in the package(s). Substitutions in your main 
+## configuration will override substitutions with the same name in a package.
+## more: https://esphome.io/components/packages.html
+##
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
+packages:
+
+  remote_package:
+    url: https://github.com/taconsultingllc/hornet-nest-alarm-panel
+    ref: main
+    refresh: 5min
+    files:
+      - packages/hnap-rev1.2-mcp23017-config.yaml
+      - packages/hnap-rev1.2-diagnostics.yaml
+      - packages/hnap-rev1.2-inputs-1-14.yaml
+      - packages/hnap-rev1.2-inputs-15-28.yaml
+      - packages/hnap-rev1.2-inputs-29-42.yaml
+      - packages/hnap-rev1.2-outputs.yaml
+      - packages/hnap-rev1.2-misc-io.yaml
+      - packages/hnap-rev1.2-weigand.yaml
+
 dashboard_import:
-  package_import_url: github://taconsultingllc/hornet-nest-alarm-panel/hnap-rev1_2-lan.yaml@main
+  package_import_url: github://taconsultingllc/hornet-nest-alarm-panel/hnap-rev1.2-lan.yaml@main
   import_full_config: true
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
 ##
-## ETHERNET
-## This component enables wired Ethernet connections for the wESP32 controller.
-## This component and the Wi-Fi component may NOT be used simultaneously, 
+## WIFI
+## This component enables Wi-Fi connections for the wESP32 controller.
+## This component and the Ethernet component may NOT be used simultaneously, 
 ## even if both are physically available.
 ## more: https://esphome.io/components/ethernet.html
-## more: https://wesp32.com/files/wESP32-Product-Brief.pdf
+##
+## CAPTIVE PORTAL
+## This component enables a Wi-Fi hotspot that can be used to select your Wi-Fi
+## network and add your credentials.
+## more: https://esphome.io/components/captive_portal
 ##
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
-ethernet:
-  type: RTL8201
-  mdc_pin: GPIO16
-  mdio_pin: GPIO17
-  clk_mode: GPIO0_IN
-  phy_addr: 0
-  phy_registers:
-    - address: 0x10
-      value: 0x1FFA
-      page_id: 0x07
+wifi:
+  ap:
+
+improv_serial:
+captive_portal:
+
+esp32_improv:
+  authorizer: false
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
 ##
@@ -138,3 +171,30 @@ ethernet:
 web_server:
   port: 80
   version: 3
+
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
+##
+## DIAGNOSTICS
+## Additional diagnostics for the Wi-Fi module not included in the packages.
+##
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
+sensor:
+  - platform: wifi_signal
+    name: WiFi Signal
+    id: wifi_signal_db
+    entity_category: diagnostic
+
+  - platform: copy
+    source_id: wifi_signal_db
+    id: wifi_signal_pct
+    name: WiFi Signal %
+    filters:
+      - lambda: return min(max(2 * (x + 100.0), 0.0), 100.0);
+    unit_of_measurement: "%"
+    entity_category: diagnostic
+
+text_sensor:
+  - platform: wifi_info
+    ip_address:
+      name: WiFi IP Address
+      entity_category: diagnostic
