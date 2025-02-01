@@ -83,3 +83,12 @@ switch:
     on_turn_off:
       - delay: 5s
       - switch.turn_on: smoke_pwr
+
+  # Piezo Buzzer - wESP32 IO23
+  - platform: gpio
+    pin: 
+      number: 23
+      inverted: False 
+    id: alarm4
+    name: Piezo Buzzer   
+    icon: mdi:bullhorn
