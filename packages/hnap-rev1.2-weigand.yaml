@@ -75,6 +75,7 @@ wiegand:
   - id: mykeypad
     d0: GPIO13 # Green Wire
     d1: GPIO18 # White Wire
+    bits: 26  # Set to the correct number of bits for your keypad
     on_key:
       - lambda: ESP_LOGI("KEY", "received key %d", x);
       - sensor.template.publish:
@@ -99,7 +100,7 @@ key_collector:
     end_key_required: false
     back_keys: "B"
     clear_keys: "C"
-    allowed_keys: "0123456789"
+    allowed_keys: "abcdefg0123456789"
     timeout: 3s
     on_progress:
       - logger.log:
