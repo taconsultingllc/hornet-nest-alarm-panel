@@ -18,7 +18,7 @@ binary_sensor:
   # I/O Header Pin 1 - wESP32 IO2
   - platform: gpio
     id: Misc1
-    name: Misc I/O - Pin 1
+    name: Misc I/O - Pin 01
     pin: 
       number: GPIO2
       mode:
@@ -33,7 +33,7 @@ binary_sensor:
   # I/O Header Pin 3 - wESP32 IO2
   - platform: gpio
     id: Misc2
-    name: Misc I/O - Pin 3
+    name: Misc I/O - Pin 03
     pin: 
       number: GPIO12
       mode:
@@ -46,7 +46,7 @@ binary_sensor:
   # I/O Header Pin 4 - MCP23017_4 IO10
   - platform: gpio
     id: Misc6
-    name: Misc I/O - Pin 4
+    name: Misc I/O - Pin 04
     pin: 
       mcp23xxx: mcp23017_4
       number: 10
@@ -60,7 +60,7 @@ binary_sensor:
   # I/O Header Pin 5 - wESP32 IO14
   - platform: gpio
     id: Misc3
-    name: Misc I/O - Pin 5
+    name: Misc I/O - Pin 05
     pin: 
       number: GPIO14
       mode:
@@ -73,7 +73,7 @@ binary_sensor:
   # I/O Header Pin 6 - MCP23017_4 IO11
   - platform: gpio
     id: Misc7
-    name: Misc I/O - Pin 6
+    name: Misc I/O - Pin 06
     pin: 
       mcp23xxx: mcp23017_4
       number: 11
@@ -87,7 +87,7 @@ binary_sensor:
   # I/O Header Pin 7 - wESP32 IO5
   - platform: gpio
     id: Misc4
-    name: Misc I/O - Pin 7
+    name: Misc I/O - Pin 07
     pin: 
       number: GPIO5
       mode:
@@ -100,7 +100,7 @@ binary_sensor:
   # I/O Header Pin 8 - MCP23017_4 IO12
   - platform: gpio
     id: Misc8
-    name: Misc I/O - Pin 8
+    name: Misc I/O - Pin 08
     pin: 
       mcp23xxx: mcp23017_4
       number: 12
@@ -114,7 +114,7 @@ binary_sensor:
   # I/O Header Pin 9 - wESP32 IO33
   - platform: gpio
     id: Misc5
-    name: Misc I/O - Pin 9
+    name: Misc I/O - Pin 09
     pin: 
       number: GPIO33
       mode:
