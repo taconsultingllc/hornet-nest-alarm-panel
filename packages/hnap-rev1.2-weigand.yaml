@@ -73,8 +73,8 @@ rtttl:
 
 wiegand:
   - id: mykeypad
-    d0: GPIO13 # Green Wire
-    d1: GPIO18 # White Wire
+    d0: GPIO18 # Green Wire
+    d1: GPIO13 # White Wire
     on_key:
       - lambda: ESP_LOGI("KEY", "received key %d", x);
       - sensor.template.publish:
