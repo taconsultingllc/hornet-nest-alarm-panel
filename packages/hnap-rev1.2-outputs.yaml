@@ -84,14 +84,15 @@ switch:
       - delay: 5s
       - switch.turn_on: smoke_pwr
 
+  # Piezo Buzzer Switch
+  - platform: output
+    name: "Piezo Buzzer"
+    icon: "mdi:bullhorn"
+    output: buzzer
+
+# Piezo Buzzer - wESP32 IO23
 output:
-  # Piezo Buzzer - wESP32 IO23
-  #- platform: gpio
-  #  pin: 
-  #    number: 23
-  #    inverted: False 
+
   - platform: ledc
     pin: GPIO23
     id: buzzer
-    name: Piezo Buzzer   
-    icon: mdi:bullhorn
