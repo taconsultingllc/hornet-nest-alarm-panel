@@ -1,26 +1,106 @@
+binary_sensor:
+  - platform: status
+    id: keypad_status
+    name: Keypad - Front Door Status
+
+text_sensor:
+  - platform: template
+    name: "Front Door Pin"
+    id: frontdoor
+  - platform: template
+    name: Last User
+    id: last_user
+    icon: mdi:clock-start 
+
+sensor:
+  - platform: template
+    name: Keypad Code
+    id: keyCode    
+    on_value:
+      - if:
+          condition:
+            - lambda: 'return id(keyCode).state == 3317755;' 
+          then:  
+            - switch.toggle: output_6
+            - text_sensor.template.publish:
+                id: last_user
+                state: "User 1 Tag"
+            - rtttl.play: "beep:d=16,o=5,b=100:b"
+      - if:
+          condition:
+            - lambda: 'return id(keyCode).state == 3269822;' 
+          then:  
+            - switch.toggle: output_6
+            - text_sensor.template.publish:
+                id: last_user
+                state: "User 2 Tag"
+            - rtttl.play: "beep:d=16,o=5,b=100:b"
+      - if:
+          condition:
+            - lambda: 'return id(keyCode).state == 123456;' 
+          then:  
+            - switch.toggle: output_6
+            - text_sensor.template.publish:
+                id: last_user
+                state: "User 1 Code"
+            - rtttl.play: "beep:d=16,o=5,b=100:b"
+      - if:
+          condition:
+            - lambda: 'return id(keyCode).state != 3317755;' 
+            - lambda: 'return id(keyCode).state != 123456;'
+            - lambda: 'return id(keyCode).state != 3269822;'
+          then:
+            - text_sensor.template.publish:
+                id: last_user
+                state: "Unknown user"
+            - rtttl.play: "beep:d=8,o=5,b=100:b"
+  - platform: template
+    name: "Front Door Keypress"
+    id: frontdoor_keypress
+    on_value:
+      - if:
+          condition:
+           - lambda: 'return id(frontdoor_keypress).state == 11;' 
+          then:  
+            - homeassistant.service:
+                service: button.press
+                data: 
+                  entity_id: button.all_knx_switches
+
+# Define Piezo Buzzer as Output for RTTTL
+rtttl:
+  output: buzzer
+
 wiegand:
   - id: mykeypad
-    d0: GPIO13
-    d1: GPIO18
+    d0: GPIO13 # Green Wire
+    d1: GPIO18 # White Wire
     on_key:
       - lambda: ESP_LOGI("KEY", "received key %d", x);
+      - sensor.template.publish:
+          id: frontdoor_keypress
+          state: !lambda 'return x;'
     on_tag:
       - lambda: ESP_LOGI("TAG", "received tag %s", x.c_str());
       - homeassistant.tag_scanned: !lambda 'return x.c_str();'
+      - sensor.template.publish:
+         id: keyCode
+         state: !lambda "return parse_number<float>(x).value();"  
+
     on_raw:
       - lambda: ESP_LOGI("RAW", "received raw %d bits, value %llx", bits, value);
 
 key_collector:
   - id: pincode_reader
     source_id: mykeypad
-    min_length: 2
-    max_length: 8
-    end_keys: "#"
-    end_key_required: true
-    back_keys: "*"
+    min_length: 6
+    max_length: 6
+    end_keys: "*"
+    end_key_required: false
+    back_keys: "B"
     clear_keys: "C"
     allowed_keys: "0123456789"
-    timeout: 5s
+    timeout: 3s
     on_progress:
       - logger.log:
           format: "input progress: '%s', started by '%c'"
@@ -29,27 +109,16 @@ key_collector:
       - logger.log:
           format: "input result: '%s', started by '%c', ended by '%c'"
           args: [ 'x.c_str()', "(start == 0 ? '~' : start)", "(end == 0 ? '~' : end)" ]
-      - if:
-          condition:
-            lambda: |-
-              return x=="111";
-          then:
-            switch.turn_on: reader01
-
-      - if:
-          condition:
-            lambda: |-
-              return x=="110";
-          then:
-            switch.turn_off: reader01
-
-      - if:
-          condition:
-            lambda: |-
-              return x=="121";
-          then:
-            switch.toggle: reader02
-
+      - text_sensor.template.publish:
+          id: frontdoor
+          state: !lambda 'return x.c_str();'
+      - sensor.template.publish:
+          id: keyCode
+          state: !lambda "return parse_number<float>(x).value();"  
+      - delay: 3s
+      - text_sensor.template.publish:
+          id: frontdoor
+          state: '000000'
     on_timeout:
       - logger.log:
           format: "input timeout: '%s', started by '%c'"

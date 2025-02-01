@@ -36,9 +36,9 @@ binary_sensor:
         condition:
         - binary_sensor.is_on: Fuse12V
         then:
-        - switch.turn_on: alarm4
+        - switch.turn_on: buzzer
         else:
-        - switch.turn_off: alarm4
+        - switch.turn_off: buzzer
     filters:
         - delayed_on_off: $sensor_debounce_time
 
@@ -59,8 +59,13 @@ binary_sensor:
         condition:
         - binary_sensor.is_on: Fuse3V
         then:
-        - switch.turn_on: alarm4
+        - switch.turn_on: buzzer
         else:
-        - switch.turn_off: alarm4
+        - switch.turn_off: buzzer
     filters:
         - delayed_on_off: $sensor_debounce_time
+
+switch:
+  # This action will cause the board to reboot
+  - platform: restart
+    name: "Reboot Alarm Panel"

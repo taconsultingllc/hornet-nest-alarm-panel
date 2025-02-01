@@ -65,10 +65,10 @@ switch:
       mode:
         output: true
       inverted: false
-    # Example Code to Turn Off Output Automatically after 10 Seconds (Useful for Door Strikes)
-    #on_turn_on:
-    #  - delay: 10s
-    #  - switch.turn_off: output_6
+    # Example Code to Turn Off Output Automatically after 5 Seconds (Useful for Door Strikes)
+    on_turn_on:
+      - delay: 5s
+      - switch.turn_off: output_6
  
   # Smoke Detector +12V Mosfet Output - MCP23017_4 IO6 (Turns Back On Automatically after 5 Seconds)
   - platform: gpio
@@ -89,6 +89,6 @@ switch:
     pin: 
       number: 23
       inverted: False 
-    id: alarm4
+    id: buzzer
     name: Piezo Buzzer   
     icon: mdi:bullhorn
