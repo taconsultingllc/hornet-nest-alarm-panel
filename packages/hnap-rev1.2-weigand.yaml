@@ -19,7 +19,7 @@ sensor:
     on_value:
       - if:
           condition:
-            - lambda: 'return id(keyCode).state == 3317755;' 
+            - lambda: 'return id(keyCode).state == 4283662183;' 
           then:  
             - switch.toggle: output_6
             - text_sensor.template.publish:
@@ -28,7 +28,7 @@ sensor:
             - rtttl.play: "beep:d=16,o=5,b=100:b"
       - if:
           condition:
-            - lambda: 'return id(keyCode).state == 3269822;' 
+            - lambda: 'return id(keyCode).state == 4285134637;' 
           then:  
             - switch.toggle: output_6
             - text_sensor.template.publish:
@@ -46,9 +46,9 @@ sensor:
             - rtttl.play: "beep:d=16,o=5,b=100:b"
       - if:
           condition:
-            - lambda: 'return id(keyCode).state != 3317755;' 
+            - lambda: 'return id(keyCode).state != 4283662183;' 
+            - lambda: 'return id(keyCode).state != 4285134637;'
             - lambda: 'return id(keyCode).state != 123456;'
-            - lambda: 'return id(keyCode).state != 3269822;'
           then:
             - text_sensor.template.publish:
                 id: last_user
