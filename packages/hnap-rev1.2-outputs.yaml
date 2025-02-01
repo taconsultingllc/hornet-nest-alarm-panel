@@ -91,7 +91,7 @@ outputs:
   #    number: 23
   #    inverted: False 
   - platform: ledc
-    pin: 23
+    pin: GPIO23
     id: buzzer
     name: Piezo Buzzer   
     icon: mdi:bullhorn
