@@ -1,0 +1,171 @@
+binary_sensor:
+
+  # Low Voltage Trigger Input
+  - platform: gpio
+    id: DCTrigger
+    name: 3-12v DC Trigger
+    icon: mdi:smoke-detector-alert
+    pin: 
+      number: GPIO35
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    device_class: problem
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  # I/O Header Pin 1 - wESP32 IO2
+  - platform: gpio
+    id: Misc1
+    name: Misc I/O - Pin 1
+    pin: 
+      number: GPIO2
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  # I/O Header Pin 2 - VCC (+12V)
+
+  # I/O Header Pin 3 - wESP32 IO2
+  - platform: gpio
+    id: Misc2
+    name: Misc I/O - Pin 3
+    pin: 
+      number: GPIO12
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  # I/O Header Pin 4 - MCP23017_4 IO10
+  - platform: gpio
+    id: Misc6
+    name: Misc I/O - Pin 4
+    pin: 
+      mcp23xxx: mcp23017_4
+      number: 10
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  # I/O Header Pin 5 - wESP32 IO14
+  - platform: gpio
+    id: Misc3
+    name: Misc I/O - Pin 5
+    pin: 
+      number: GPIO14
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  # I/O Header Pin 6 - MCP23017_4 IO11
+  - platform: gpio
+    id: Misc7
+    name: Misc I/O - Pin 6
+    pin: 
+      mcp23xxx: mcp23017_4
+      number: 11
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  # I/O Header Pin 7 - wESP32 IO5
+  - platform: gpio
+    id: Misc4
+    name: Misc I/O - Pin 7
+    pin: 
+      number: GPIO5
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  # I/O Header Pin 8 - MCP23017_4 IO12
+  - platform: gpio
+    id: Misc8
+    name: Misc I/O - Pin 8
+    pin: 
+      mcp23xxx: mcp23017_4
+      number: 12
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  # I/O Header Pin 9 - wESP32 IO33
+  - platform: gpio
+    id: Misc5
+    name: Misc I/O - Pin 9
+    pin: 
+      number: GPIO33
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  # I/O Header Pin 10 - MCP23017_4 IO13
+  - platform: gpio
+    id: Misc9
+    name: Misc I/O - Pin 10
+    pin: 
+      mcp23xxx: mcp23017_4
+      number: 13
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  # I/O Header Pin 11 - +3.3V
+  
+  # I/O Header Pin 12 - MCP23017_4 IO14
+  - platform: gpio
+    id: Misc10
+    name: Misc I/O - Pin 12
+    pin: 
+      mcp23xxx: mcp23017_4
+      number: 14
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  # I/O Header Pin 13 - GND
+
+  # I/O Header Pin 14 - MCP23017_4 IO15
+  - platform: gpio
+    id: Misc11
+    name: Misc I/O - Pin 14
+    pin: 
+      mcp23xxx: mcp23017_4
+      number: 15
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    filters:
+      - delayed_on_off: $sensor_debounce_time

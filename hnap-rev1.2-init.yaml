@@ -1,0 +1,140 @@
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
+##
+## Hornet Nest Alarm Panel v1.2 (wESP32)
+## Firmware configuration for ESPHome
+##
+## filename: hornet-nest-alarm-panel.lan.yaml
+## GitHub: https://github.com/taconsultingllc/hornet-nest-alarm-panel
+## Buy TAC hardware: http://www.taconsulting.llc/
+## Help & Support: 
+##
+## Copyright© 2025 Technology Automation Consulting LLC
+##
+## Permission is hereby granted, free of charge, to any person obtaining a copy
+## of this software and associated documentation files (the "Software"), to deal
+## in the Software without restriction, including without limitation the rights
+## to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+## copies of the Software, and to permit persons to whom the Software is
+## furnished to do so, subject to the following conditions:
+## 
+## The above copyright notice and this permission notice shall be included in all
+## copies or substantial portions of the Software.
+## 
+## THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+## IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+## FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+## AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+## LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+## OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+## SOFTWARE.
+##
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
+
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
+##
+## GENERAL SETTINGS
+## Customize these variables to your preferences and needs
+## more: https://esphome.io/guides/configuration-types.html#substitutions
+##
+## NAME
+## By default, the name of the ESPHome device is "hornet-nest-xxxxxx" where xxxxxx 
+## is a unique identifier. The device's hostname on your network is also defined 
+## by the name, defaulting to "hornet-nest-xxxxxx.local". Edit this variable to
+## customize the name and hostname. Note: only lowercase characters, numbers and 
+## hyphen(-) are allowed.
+##
+## SENSOR_INVERTED
+## By default, all zone sensor inputs are configured for Normally Closed devices.
+## If your devices are Normally Open, change which line is commented out.
+##
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
+substitutions:
+  name: "hornet-nest"
+  friendly_name: "Hornet Nest Alarm Panel"
+ 
+  sensor_debounce_time: 500ms
+  
+  #sensor_inverted: "true"  #For NO (Normally Open) Sensors
+  sensor_inverted: "false"  #For NC (Normally Closed) Senors
+
+esphome:
+  name: "${name}"
+  friendly_name: "${friendly_name}"
+  name_add_mac_suffix: true
+  project:
+    name: taconsulting.hornet-nest-alarm-panel
+    version: "1.0"
+
+esp32:
+  board: wesp32
+  framework:
+    type: arduino
+
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
+##
+## ENABLE LOGGING
+## To be able to get logs from the device via serial and api
+## more: https://esphome.io/components/logger.html
+##
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
+logger:
+
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
+##
+## ENABLE HOME ASSISTANT API
+## The ESPHome native API is used to communicate with clients directly, with 
+## a highly-optimized network protocol. Currently, only the ESPHome tool, 
+## Home Assistant and ioBroker use this native API.
+## more: https://esphome.io/components/api.html
+##
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
+api:
+
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
+##
+## OTA UPDATES
+## Enables over-the-air updates
+## more: https://esphome.io/components/ota.html
+##
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
+ota:
+  - platform: esphome
+
+dashboard_import:
+  package_import_url: github://taconsultingllc/hornet-nest-alarm-panel/hnap-rev1.2-lan.yaml@main
+  import_full_config: true
+
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
+##
+## ETHERNET
+## This component enables wired Ethernet connections for the wESP32 controller.
+## This component and the Wi-Fi component may NOT be used simultaneously, 
+## even if both are physically available.
+## more: https://esphome.io/components/ethernet.html
+## more: https://wesp32.com/files/wESP32-Product-Brief.pdf
+##
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
+ethernet:
+  type: RTL8201
+  mdc_pin: GPIO16
+  mdio_pin: GPIO17
+  clk_mode: GPIO0_IN
+  phy_addr: 0
+  phy_registers:
+    - address: 0x10
+      value: 0x1FFA
+      page_id: 0x07
+
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
+##
+## WEB SEVER
+## This component creates a simple web server on the node that can be accessed 
+## through any browser and a simple REST API. It enables the built-in web server 
+## for viewing the device state, internals and controls via web browser on the 
+## same local network as the device.
+## more: https://esphome.io/components/web_server.html
+##
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
+web_server:
+  port: 80
+  version: 3

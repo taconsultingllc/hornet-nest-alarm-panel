@@ -1,0 +1,85 @@
+switch:
+
+  # General +12V Mosfet Output - MCP23017_4 IO0
+  - platform: gpio
+    name: Output 1
+    id: output_1
+    pin:
+      mcp23xxx: mcp23017_4
+      number: 0
+      mode:
+        output: true
+      inverted: false
+
+  # General +12V Mosfet Output - MCP23017_4 IO1
+  - platform: gpio
+    name: Output 2
+    id: output_2
+    pin:
+      mcp23xxx: mcp23017_4
+      number: 1
+      mode:
+        output: true
+      inverted: false
+  
+  # General +12V Mosfet Output - MCP23017_4 IO2
+  - platform: gpio
+    name: Output 3
+    id: output_3
+    pin:
+      mcp23xxx: mcp23017_4
+      number: 2
+      mode:
+        output: true
+      inverted: false
+
+  # General +12V Mosfet Output - MCP23017_4 IO3
+  - platform: gpio
+    name: Output 4
+    id: output_4
+    pin:
+      mcp23xxx: mcp23017_4
+      number: 3
+      mode:
+        output: true
+      inverted: false
+   
+  # General +12V Mosfet Output - MCP23017_4 IO4
+  - platform: gpio
+    name: Output 5
+    id: output_5
+    pin:
+      mcp23xxx: mcp23017_4
+      number: 4
+      mode:
+        output: true
+      inverted: false
+
+  # General +12V Mosfet Output - MCP23017_4 IO5
+  - platform: gpio
+    name: Output 6
+    id: output_6
+    pin:
+      mcp23xxx: mcp23017_4
+      number: 5
+      mode:
+        output: true
+      inverted: false
+    # Example Code to Turn Off Output Automatically after 10 Seconds (Useful for Door Strikes)
+    #on_turn_on:
+    #  - delay: 10s
+    #  - switch.turn_off: output_6
+ 
+  # Smoke Detector +12V Mosfet Output - MCP23017_4 IO6 (Turns Back On Automatically after 5 Seconds)
+  - platform: gpio
+    name: Smoke Detector Power
+    id: smoke_pwr
+    pin:
+      mcp23xxx: mcp23017_4
+      number: 6
+      mode:
+        output: true
+      inverted: false
+    on_turn_off:
+      - delay: 5s
+      - switch.turn_on: smoke_pwr

@@ -1,14 +1,14 @@
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
 ##
-## Hornet Nest Alarm Panel v1.1, v1.2 (wESP32)
+## Hornet Nest Alarm Panel v1.2 (wESP32)
 ## Firmware configuration for ESPHome
 ##
 ## filename: hornet-nest-alarm-panel.lan.yaml
 ## GitHub: https://github.com/taconsultingllc/hornet-nest-alarm-panel
-## Buy TAC hardware: 
+## Buy TAC hardware: http://www.taconsulting.llc/
 ## Help & Support: 
 ##
-## Copyright© 2024 Technology Automation Consulting LLC
+## Copyright© 2025 Technology Automation Consulting LLC
 ##
 ## Permission is hereby granted, free of charge, to any person obtaining a copy
 ## of this software and associated documentation files (the "Software"), to deal
@@ -122,15 +122,17 @@ packages:
     ref: main
     refresh: 5min
     files:
-      - packages/hnap-rev1.1-mcp23017-config.yaml
-      - packages/hnap-rev1.1-diagnostics.yaml
-      - packages/hnap-rev1.1-inputs-1-14.yaml
-      - packages/hnap-rev1.1-inputs-15-28.yaml
-      - packages/hnap-rev1.1-inputs-29-42.yaml
-      - packages/hnap-rev1.1-outputs.yaml
+      - packages/hnap-rev1.2-mcp23017-config.yaml
+      - packages/hnap-rev1.2-diagnostics.yaml
+      - packages/hnap-rev1.2-inputs-1-14.yaml
+      - packages/hnap-rev1.2-inputs-15-28.yaml
+      - packages/hnap-rev1.2-inputs-29-42.yaml
+      - packages/hnap-rev1.2-outputs.yaml
+      - packages/hnap-rev1.2-misc-io.yaml
+      - packages/hnap-rev1.2-weigand.yaml
 
 dashboard_import:
-  package_import_url: github://taconsultingllc/hornet-nest-alarm-panel/hnap-v1.1-lan.yaml@main
+  package_import_url: github://taconsultingllc/hornet-nest-alarm-panel/hnap-rev1.2-lan.yaml@main
   import_full_config: true
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##

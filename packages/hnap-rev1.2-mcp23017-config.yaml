@@ -1,0 +1,22 @@
+# Initialize the I2C Bus
+i2c:
+  sda: 15
+  scl: 4
+  scan: true
+  id: bus_a
+  frequency: 200kHz
+
+# Define I2C Devices (Microchip MCP23017 I/O Port Expanders)
+mcp23017:
+  # Inputs 1-14
+  - id: 'mcp23017_1'
+    address: 0x20
+  # Inputs 15-28
+  - id: 'mcp23017_2'
+    address: 0x21
+  # Inputs 29-42
+  - id: 'mcp23017_3'
+    address: 0x22   
+  # +12V Outputs & Misc I/O
+  - id: 'mcp23017_4'
+    address: 0x23 
