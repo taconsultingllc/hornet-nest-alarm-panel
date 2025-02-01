@@ -88,11 +88,12 @@ switch:
   - platform: output
     name: "Piezo Buzzer"
     icon: "mdi:bullhorn"
-    output: buzzer
+    id: buzzer
+    output: buzzer_output
 
-# Piezo Buzzer - wESP32 IO23
+
 output:
-
+  # Piezo Buzzer - wESP32 IO23
   - platform: ledc
     pin: GPIO23
-    id: buzzer
+    id: buzzer_output
