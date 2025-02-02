@@ -7,6 +7,7 @@ text_sensor:
   - platform: template
     name: "Keypad - Received Pin"
     id: keypadpin
+    icon: mdi:lastpass
   - platform: template
     name: Last User
     id: last_user
@@ -15,7 +16,8 @@ text_sensor:
 sensor:
   - platform: template
     name: Keypad - Last Code
-    id: keyCode    
+    id: keyCode 
+    icon: mdi:lastpass   
     on_value:
       - if:
           condition:
@@ -57,6 +59,7 @@ sensor:
   - platform: template
     name: "Keypad - Last Keypress"
     id: last_keypress
+    icon: mdi:lastpass
     on_value:
       - if:
           condition:
