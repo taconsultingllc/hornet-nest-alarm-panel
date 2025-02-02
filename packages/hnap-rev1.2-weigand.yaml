@@ -88,7 +88,7 @@ wiegand:
       - homeassistant.tag_scanned: !lambda 'return x.c_str();'
       - sensor.template.publish:
          id: keyCode
-         state: !lambda "return pstatic_cast<int>(x).value();"  
+         state: !lambda "return parse_number<int>(x).value();"  
 
     on_raw:
       - lambda: ESP_LOGI("RAW", "received raw %d bits, value %llx", bits, value);
@@ -117,7 +117,7 @@ key_collector:
           state: !lambda 'return x.c_str();'
       - sensor.template.publish:
           id: keyCode
-          state: !lambda "return static_cast<int>(x).value();"  
+          state: !lambda "return parse_number<int>(x).value();"  
       - delay: 3s
       - text_sensor.template.publish:
           id: keypadpin
