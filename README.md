@@ -36,3 +36,7 @@ These **ESPHome** firmware configurations allow for a simple, plug-and-play setu
 ## In This Repository
 
 This repository contains **complete firmware configuration YAML templates** for the **Hornet Nest Alarm Panel** at the top level. These templates are ready to be imported using **ESPHome Dashboard**, where they can be customized and deployed.
+
+## User Manual
+
+For detailed instructions, please refer to the official user manual [here.](hnap-user-manual.pdf)
