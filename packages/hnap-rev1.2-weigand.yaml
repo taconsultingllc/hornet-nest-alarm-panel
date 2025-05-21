@@ -102,7 +102,7 @@ key_collector:
     end_key_required: false
     back_keys: "B"
     clear_keys: "C"
-    allowed_keys: "abcdefg0123456789"
+    allowed_keys: "0123456789"
     timeout: 3s
     on_progress:
       - logger.log:
