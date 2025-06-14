@@ -138,7 +138,7 @@ packages:
       - packages/hnap-rev1.2-weigand.yaml
 
 dashboard_import:
-  package_import_url: github://taconsultingllc/hornet-nest-alarm-panel/hnap-rev1.2-lan.yaml@main
+  package_import_url: github://taconsultingllc/hornet-nest-alarm-panel/hnap-rev1.2-wifi.yaml@main
   import_full_config: true
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
