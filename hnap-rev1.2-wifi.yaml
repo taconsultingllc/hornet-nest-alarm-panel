@@ -157,6 +157,8 @@ dashboard_import:
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
 wifi:
   ap:
+    ssid: "your_ap_name" # SSID for the access point
+    password: "your_ap_password" # Set a strong password for your AP
 
 improv_serial:
 captive_portal:
