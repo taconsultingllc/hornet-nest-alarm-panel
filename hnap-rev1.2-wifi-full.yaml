@@ -1,0 +1,925 @@
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
+##
+## Hornet Nest Alarm Panel v1.2 (wESP32)
+## Firmware configuration for ESPHome
+##
+## filename: hornet-nest-alarm-panel.lan.yaml
+## GitHub: https://github.com/taconsultingllc/hornet-nest-alarm-panel
+## Buy TAC hardware: http://www.taconsulting.llc/
+## Help & Support: 
+##
+## Copyright© 2025 Technology Automation Consulting LLC
+##
+## Permission is hereby granted, free of charge, to any person obtaining a copy
+## of this software and associated documentation files (the "Software"), to deal
+## in the Software without restriction, including without limitation the rights
+## to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+## copies of the Software, and to permit persons to whom the Software is
+## furnished to do so, subject to the following conditions:
+## 
+## The above copyright notice and this permission notice shall be included in all
+## copies or substantial portions of the Software.
+## 
+## THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+## IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+## FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+## AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+## LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+## OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+## SOFTWARE.
+##
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
+
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
+##
+## GENERAL SETTINGS
+## Customize these variables to your preferences and needs
+## more: https://esphome.io/guides/configuration-types.html#substitutions
+##
+## NAME
+## By default, the name of the ESPHome device is "hornet-nest-xxxxxx" where xxxxxx 
+## is a unique identifier. The device's hostname on your network is also defined 
+## by the name, defaulting to "hornet-nest-xxxxxx.local". Edit this variable to
+## customize the name and hostname. Note: only lowercase characters, numbers and 
+## hyphen(-) are allowed.
+##
+## SENSOR_INVERTED
+## By default, all zone sensor inputs are configured for Normally Closed devices.
+## If your devices are Normally Open, change which line is commented out.
+##
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
+substitutions:
+  name: "hornet-nest"
+  friendly_name: "Hornet Nest Alarm Panel"
+ 
+  sensor_debounce_time: 500ms
+  
+  #sensor_inverted: "true"  #For NO (Normally Open) Sensors
+  sensor_inverted: "false"  #For NC (Normally Closed) Senors
+
+esphome:
+  name: "${name}"
+  friendly_name: "${friendly_name}"
+  name_add_mac_suffix: true
+  project:
+    name: taconsulting.hornet-nest-alarm-panel
+    version: "1.0"
+  on_boot:
+    then:
+      - text_sensor.template.publish:
+          id: device_id
+          state: !lambda 'return get_mac_address();'
+
+esp32:
+  board: wesp32
+  framework:
+    type: arduino
+
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
+##
+## ENABLE LOGGING
+## To be able to get logs from the device via serial and api
+## more: https://esphome.io/components/logger.html
+##
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
+logger:
+
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
+##
+## ENABLE HOME ASSISTANT API
+## The ESPHome native API is used to communicate with clients directly, with 
+## a highly-optimized network protocol. Currently, only the ESPHome tool, 
+## Home Assistant and ioBroker use this native API.
+## more: https://esphome.io/components/api.html
+##
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
+api:
+  services:
+    - service: play_rtttl
+      variables:
+        song_str: string
+      then:
+        - rtttl.play: !lambda 'return song_str;'
+
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
+##
+## OTA UPDATES
+## Enables over-the-air updates
+## more: https://esphome.io/components/ota.html
+##
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
+ota:
+  - platform: esphome
+
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
+##
+## WIFI
+## This component enables Wi-Fi connections for the wESP32 controller.
+## This component and the Ethernet component may NOT be used simultaneously, 
+## even if both are physically available.
+## more: https://esphome.io/components/ethernet.html
+##
+## CAPTIVE PORTAL
+## This component enables a Wi-Fi hotspot that can be used to select your Wi-Fi
+## network and add your credentials.
+## more: https://esphome.io/components/captive_portal
+##
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
+wifi:
+  ap:
+    ssid: "your_ap_name" # SSID for the access point
+    password: "your_ap_password" # Set a strong password for your AP
+
+improv_serial:
+captive_portal:
+
+esp32_improv:
+  authorizer: none
+
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
+##
+## WEB SEVER
+## This component creates a simple web server on the node that can be accessed 
+## through any browser and a simple REST API. It enables the built-in web server 
+## for viewing the device state, internals and controls via web browser on the 
+## same local network as the device.
+## more: https://esphome.io/components/web_server.html
+##
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
+web_server:
+  port: 80
+  version: 3
+
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
+##
+## I2C
+## Initialize the 12C Buss and Define MCP23017 Modules
+##
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
+
+# Initialize the I2C Bus
+i2c:
+  sda: 15
+  scl: 4
+  scan: true
+  id: bus_a
+  frequency: 200kHz
+
+# Define I2C Devices (Microchip MCP23017 I/O Port Expanders)
+mcp23017:
+  # Inputs 1-14
+  - id: 'mcp23017_1'
+    address: 0x20
+  # Inputs 15-28
+  - id: 'mcp23017_2'
+    address: 0x21
+  # Inputs 29-42
+  - id: 'mcp23017_3'
+    address: 0x22   
+  # +12V Outputs & Misc I/O
+  - id: 'mcp23017_4'
+    address: 0x23 
+
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
+##
+## SENSORS
+##
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
+sensor:
+  - platform: wifi_signal
+    name: WiFi Signal
+    id: wifi_signal_db
+    entity_category: diagnostic
+
+  - platform: copy
+    source_id: wifi_signal_db
+    id: wifi_signal_pct
+    name: WiFi Signal %
+    filters:
+      - lambda: return min(max(2 * (x + 100.0), 0.0), 100.0);
+    unit_of_measurement: "%"
+    entity_category: diagnostic
+    
+text_sensor:
+  # Determine the IP Address of the wESP32 and Expose to HA
+  - platform: wifi_info
+    ip_address:
+      name: WiFi IP Address
+      entity_category: diagnostic
+  # Determine the Device ID (Mac Address) of the wESP32 and Expose to HA
+  - platform: template
+    name: Device ID
+    id: device_id
+    entity_category: diagnostic
+    update_interval: never
+
+binary_sensor:
+  # Start +12V Fuse Monitoring - On Fuse Blown, Enable Piezo Buzzer
+  - platform: gpio
+    id: Fuse12V
+    name: 12V Fuse Status
+    icon: mdi:fuse
+    pin:
+      number: GPIO34
+      mode:
+        input: true
+        pullup: false
+      inverted: false
+    device_class: problem
+    on_state:
+      if:
+        condition:
+        - binary_sensor.is_on: Fuse12V
+        then:
+        - switch.turn_on: buzzer
+        else:
+        - switch.turn_off: buzzer
+    filters:
+        - delayed_on_off: $sensor_debounce_time
+
+  # Start +3.3V Fuse Monitoring - On Fuse Blown, Enable Piezo Buzzer
+  - platform: gpio
+    id: Fuse3V
+    name: 3.3V Fuse Status
+    icon: mdi:fuse
+    pin:
+      number: GPIO36
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    device_class: problem
+    on_state:
+      if:
+        condition:
+        - binary_sensor.is_on: Fuse3V
+        then:
+        - switch.turn_on: buzzer
+        else:
+        - switch.turn_off: buzzer
+    filters:
+        - delayed_on_off: $sensor_debounce_time
+
+  # Start MCP23017 Chip number 1 - 14 zones
+  # Zone 01 Input
+  - platform: gpio
+    name: Zone 01
+    pin:
+      mcp23xxx: mcp23017_1
+      number: 8
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  # Zone 02 Input
+  - platform: gpio
+    name: Zone 02
+    pin:
+      mcp23xxx: mcp23017_1
+      number: 9
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  # Zone 03 Input
+  - platform: gpio
+    name: Zone 03
+    pin:
+      mcp23xxx: mcp23017_1
+      number: 10
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  # Zone 04 Input
+  - platform: gpio
+    name: Zone 04
+    pin:
+      mcp23xxx: mcp23017_1
+      number: 11
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  # Zone 05 Input
+  - platform: gpio
+    name: Zone 05
+    pin:
+      mcp23xxx: mcp23017_1
+      number: 12
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  # Zone 06 Input
+  - platform: gpio
+    name: Zone 06
+    pin:
+      mcp23xxx: mcp23017_1
+      number: 13
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  # Zone 07 Input
+  - platform: gpio
+    name: Zone 07
+    pin:
+      mcp23xxx: mcp23017_1
+      number: 14
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  # Zone 08 Input
+  - platform: gpio
+    name: Zone 08
+    pin:
+      mcp23xxx: mcp23017_1
+      number: 0
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  # Zone 09 Input
+  - platform: gpio
+    name: Zone 09
+    pin:
+      mcp23xxx: mcp23017_1
+      number: 1
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  # Zone 10 Input
+  - platform: gpio
+    name: Zone 10
+    pin:
+      mcp23xxx: mcp23017_1
+      number: 2
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  # Zone 11 Input
+  - platform: gpio
+    name: Zone 11
+    pin:
+      mcp23xxx: mcp23017_1
+      number: 3
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  # Zone 12 Input
+  - platform: gpio
+    name: Zone 12
+    pin:
+      mcp23xxx: mcp23017_1
+      number: 4
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  # Zone 13 Input
+  - platform: gpio
+    name: Zone 13
+    pin:
+      mcp23xxx: mcp23017_1
+      number: 5
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  # Zone 14 Input
+  - platform: gpio
+    name: Zone 14
+    pin:
+      mcp23xxx: mcp23017_1
+      number: 6
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+  # End MCP23017 Chip number 1
+
+  # Start MCP23017 Chip number 2 - 14 zones
+  # Zone 15 Input
+  - platform: gpio
+    name: Zone 15
+    pin:
+      mcp23xxx: mcp23017_2
+      number: 8
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  # Zone 16 Input
+  - platform: gpio
+    name: Zone 16
+    pin:
+      mcp23xxx: mcp23017_2
+      number: 9
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  # Zone 17 Input
+  - platform: gpio
+    name: Zone 17
+    pin:
+      mcp23xxx: mcp23017_2
+      number: 10
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  # Zone 18 Input
+  - platform: gpio
+    name: Zone 18
+    pin:
+      mcp23xxx: mcp23017_2
+      number: 11
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  # Zone 19 Input
+  - platform: gpio
+    name: Zone 19
+    pin:
+      mcp23xxx: mcp23017_2
+      number: 12
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  # Zone 20 Input
+  - platform: gpio
+    name: Zone 20
+    pin:
+      mcp23xxx: mcp23017_2
+      number: 13
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  # Zone 21 Input
+  - platform: gpio
+    name: Zone 21
+    pin:
+      mcp23xxx: mcp23017_2
+      number: 14
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  # Zone 22 Input
+  - platform: gpio
+    name: Zone 22
+    pin:
+      mcp23xxx: mcp23017_2
+      number: 0
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  # Zone 23 Input
+  - platform: gpio
+    name: Zone 23
+    pin:
+      mcp23xxx: mcp23017_2
+      number: 1
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  # Zone 24 Input
+  - platform: gpio
+    name: Zone 24
+    pin:
+      mcp23xxx: mcp23017_2
+      number: 2
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  # Zone 25 Input
+  - platform: gpio
+    name: Zone 25
+    pin:
+      mcp23xxx: mcp23017_2
+      number: 3
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  # Zone 26 Input
+  - platform: gpio
+    name: Zone 26
+    pin:
+      mcp23xxx: mcp23017_2
+      number: 4
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  # Zone 27 Input
+  - platform: gpio
+    name: Zone 27
+    pin:
+      mcp23xxx: mcp23017_2
+      number: 5
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  # Zone 28 Input
+  - platform: gpio
+    name: Zone 28
+    pin:
+      mcp23xxx: mcp23017_2
+      number: 6
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+  # End MCP23017 Chip number 2
+
+  # Start MCP23017 Chip number 3 - 14 zones
+  # Zone 29 Input
+  - platform: gpio
+    name: Zone 29
+    pin:
+      mcp23xxx: mcp23017_3
+      number: 8
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  # Zone 30 Input
+  - platform: gpio
+    name: Zone 30
+    pin:
+      mcp23xxx: mcp23017_3
+      number: 9
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  # Zone 31 Input
+  - platform: gpio
+    name: Zone 31
+    pin:
+      mcp23xxx: mcp23017_3
+      number: 10
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  # Zone 32 Input
+  - platform: gpio
+    name: Zone 32
+    pin:
+      mcp23xxx: mcp23017_3
+      number: 11
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  # Zone 33 Input
+  - platform: gpio
+    name: Zone 33
+    pin:
+      mcp23xxx: mcp23017_3
+      number: 12
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  # Zone 34 Input
+  - platform: gpio
+    name: Zone 34
+    pin:
+      mcp23xxx: mcp23017_3
+      number: 13
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  # Zone 35 Input
+  - platform: gpio
+    name: Zone 35
+    pin:
+      mcp23xxx: mcp23017_3
+      number: 14
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  # Zone 36 Input
+  - platform: gpio
+    name: Zone 36
+    pin:
+      mcp23xxx: mcp23017_3
+      number: 0
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  # Zone 37 Input
+  - platform: gpio
+    name: Zone 37
+    pin:
+      mcp23xxx: mcp23017_3
+      number: 1
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  # Zone 38 Input
+  - platform: gpio
+    name: Zone 38
+    pin:
+      mcp23xxx: mcp23017_3
+      number: 2
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  # Zone 39 Input
+  - platform: gpio
+    name: Zone 39
+    pin:
+      mcp23xxx: mcp23017_3
+      number: 3
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  # Zone 40 Input
+  - platform: gpio
+    name: Zone 40
+    pin:
+      mcp23xxx: mcp23017_3
+      number: 4
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  # Zone 41 Input
+  - platform: gpio
+    name: Zone 41
+    pin:
+      mcp23xxx: mcp23017_3
+      number: 5
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+
+  # Zone 42 Input
+  - platform: gpio
+    name: Zone 42
+    pin:
+      mcp23xxx: mcp23017_3
+      number: 6
+      mode:
+        input: true
+        pullup: false
+      inverted: $sensor_inverted
+    filters:
+      - delayed_on_off: $sensor_debounce_time
+  # End MCP23017 Chip number 3
+
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
+##
+## SWITCHES & OUTPUTS
+##
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
+
+switch:
+  # This action will cause the board to reboot
+  - platform: restart
+    name: "Reboot Alarm Panel"
+
+  # General +12V Mosfet Output - MCP23017_4 IO0
+  - platform: gpio
+    name: Output 1
+    id: output_1
+    pin:
+      mcp23xxx: mcp23017_4
+      number: 0
+      mode:
+        output: true
+      inverted: false
+
+  # General +12V Mosfet Output - MCP23017_4 IO1
+  - platform: gpio
+    name: Output 2
+    id: output_2
+    pin:
+      mcp23xxx: mcp23017_4
+      number: 1
+      mode:
+        output: true
+      inverted: false
+  
+  # General +12V Mosfet Output - MCP23017_4 IO2
+  - platform: gpio
+    name: Output 3
+    id: output_3
+    pin:
+      mcp23xxx: mcp23017_4
+      number: 2
+      mode:
+        output: true
+      inverted: false
+
+  # General +12V Mosfet Output - MCP23017_4 IO3
+  - platform: gpio
+    name: Output 4
+    id: output_4
+    pin:
+      mcp23xxx: mcp23017_4
+      number: 3
+      mode:
+        output: true
+      inverted: false
+   
+  # General +12V Mosfet Output - MCP23017_4 IO4
+  - platform: gpio
+    name: Output 5
+    id: output_5
+    pin:
+      mcp23xxx: mcp23017_4
+      number: 4
+      mode:
+        output: true
+      inverted: false
+
+  # General +12V Mosfet Output - MCP23017_4 IO5
+  - platform: gpio
+    name: Output 6
+    id: output_6
+    pin:
+      mcp23xxx: mcp23017_4
+      number: 5
+      mode:
+        output: true
+      inverted: false
+    # Example Code to Turn Off Output Automatically after 5 Seconds (Useful for Door Strikes)
+    #on_turn_on:
+      #- delay: 5s
+      #- switch.turn_off: output_6
+ 
+  # Smoke Detector +12V Mosfet Output - MCP23017_4 IO6 (Turns Back On Automatically after 5 Seconds)
+  - platform: gpio
+    name: Smoke Detector Power
+    id: smoke_pwr
+    pin:
+      mcp23xxx: mcp23017_4
+      number: 6
+      mode:
+        output: true
+      inverted: false
+    on_turn_off:
+      - delay: 5s
+      - switch.turn_on: smoke_pwr
+
+  # Piezo Buzzer Switch
+  - platform: output
+    name: "Piezo Buzzer"
+    icon: "mdi:bullhorn"
+    id: buzzer
+    output: buzzer_output
+
+output:
+  # Piezo Buzzer - wESP32 IO23
+  - platform: ledc
+    pin: GPIO23
+    id: buzzer_output
+
+# Define Piezo Buzzer as Output for RTTTL
+rtttl:
+  output: buzzer_output

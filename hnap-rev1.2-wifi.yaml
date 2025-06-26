@@ -129,7 +129,7 @@ packages:
     refresh: 5min
     files:
       - packages/hnap-rev1.2-mcp23017-config.yaml
-      - packages/hnap-rev1.2-diagnostics.yaml
+      - packages/hnap-rev1.2-wifi-diagnostics.yaml
       - packages/hnap-rev1.2-inputs-1-14.yaml
       - packages/hnap-rev1.2-inputs-15-28.yaml
       - packages/hnap-rev1.2-inputs-29-42.yaml

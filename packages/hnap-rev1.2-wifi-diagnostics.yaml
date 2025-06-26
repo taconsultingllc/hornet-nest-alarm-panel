@@ -1,0 +1,58 @@
+sensor:
+  # Expose the Board Uptime to HA
+  - platform: uptime
+    name: Uptime
+    id: uptime_sensor
+    entity_category: diagnostic
+
+binary_sensor:
+  # Start +12V Fuse Monitoring - On Fuse Blown, Enable Piezo Buzzer
+  - platform: gpio
+    id: Fuse12V
+    name: 12V Fuse Status
+    icon: mdi:fuse
+    pin:
+      number: GPIO34
+      mode:
+        input: true
+        pullup: false
+      inverted: false
+    device_class: problem
+    on_state:
+      if:
+        condition:
+        - binary_sensor.is_on: Fuse12V
+        then:
+        - switch.turn_on: buzzer
+        else:
+        - switch.turn_off: buzzer
+    filters:
+        - delayed_on_off: $sensor_debounce_time
+
+  # Start +3.3V Fuse Monitoring - On Fuse Blown, Enable Piezo Buzzer
+  - platform: gpio
+    id: Fuse3V
+    name: 3.3V Fuse Status
+    icon: mdi:fuse
+    pin:
+      number: GPIO36
+      mode:
+        input: true
+        pullup: false
+      inverted: true
+    device_class: problem
+    on_state:
+      if:
+        condition:
+        - binary_sensor.is_on: Fuse3V
+        then:
+        - switch.turn_on: buzzer
+        else:
+        - switch.turn_off: buzzer
+    filters:
+        - delayed_on_off: $sensor_debounce_time
+
+switch:
+  # This action will cause the board to reboot
+  - platform: restart
+    name: "Reboot Alarm Panel"
