@@ -64,11 +64,6 @@ esphome:
   project:
     name: taconsulting.hornet-nest-alarm-panel
     version: "1.0"
-  on_boot:
-    then:
-      - text_sensor.template.publish:
-          id: device_id
-          state: !lambda 'return get_mac_address();'
 
 esp32:
   board: wesp32
