@@ -50,7 +50,7 @@
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
 substitutions:
   name: "hornet-nest"
-  friendly_name: "Hornet Nest Alarm Panel"
+  friendly_name: "Hornet Nest Alarm Panel WiFi"
  
   sensor_debounce_time: 500ms
   
@@ -60,20 +60,51 @@ substitutions:
 esphome:
   name: "${name}"
   friendly_name: "${friendly_name}"
-  name_add_mac_suffix: true
+  name_add_mac_suffix: False
   project:
     name: taconsulting.hornet-nest-alarm-panel
     version: "1.0"
-  on_boot:
-    then:
-      - text_sensor.template.publish:
-          id: device_id
-          state: !lambda 'return get_mac_address();'
 
 esp32:
   board: wesp32
   framework:
     type: arduino
+
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
+##
+## WIFI
+## This component enables Wi-Fi connections for the wESP32 controller.
+## This component and the Ethernet component may NOT be used simultaneously, 
+## even if both are physically available.
+## more: https://esphome.io/components/ethernet.html
+##
+## CAPTIVE PORTAL
+## This component enables a Wi-Fi hotspot that can be used to select your Wi-Fi
+## network and add your credentials.
+## more: https://esphome.io/components/captive_portal
+##
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
+wifi:
+  ap:
+
+captive_portal:
+
+esp32_improv:
+  authorizer: none
+
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
+##
+## WEB SEVER
+## This component creates a simple web server on the node that can be accessed 
+## through any browser and a simple REST API. It enables the built-in web server 
+## for viewing the device state, internals and controls via web browser on the 
+## same local network as the device.
+## more: https://esphome.io/components/web_server.html
+##
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
+web_server:
+  port: 80
+  version: 3
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
 ##
@@ -94,12 +125,6 @@ logger:
 ##
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
 api:
-  services:
-    - service: play_rtttl
-      variables:
-        song_str: string
-      then:
-        - rtttl.play: !lambda 'return song_str;'
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
 ##
@@ -111,69 +136,6 @@ api:
 ota:
   - platform: esphome
 
-##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
-##
-## PACKAGES
-## All definitions from packages will be merged with your device’s main 
-## configuration in a non-destructive way. This allows overriding (parts of) 
-## configuration contained in the package(s). Substitutions in your main 
-## configuration will override substitutions with the same name in a package.
-## more: https://esphome.io/components/packages.html
-##
-##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
-packages:
-
-  remote_package:
-    url: https://github.com/taconsultingllc/hornet-nest-alarm-panel
-    ref: main
-    refresh: 5min
-    files:
-      - packages/hnap-rev1.2-mcp23017-config.yaml
-      - packages/hnap-rev1.2-wifi-diagnostics.yaml
-      - packages/hnap-rev1.2-inputs-1-14.yaml
-      - packages/hnap-rev1.2-inputs-15-28.yaml
-      - packages/hnap-rev1.2-inputs-29-42.yaml
-      - packages/hnap-rev1.2-outputs.yaml
-      - packages/hnap-rev1.2-misc-io.yaml
-      - packages/hnap-rev1.2-weigand.yaml
-
 dashboard_import:
   package_import_url: github://taconsultingllc/hornet-nest-alarm-panel/hnap-rev1.2-wifi.yaml@main
   import_full_config: true
-
-##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
-##
-## WIFI
-## This component enables Wi-Fi connections for the wESP32 controller.
-## This component and the Ethernet component may NOT be used simultaneously, 
-## even if both are physically available.
-## more: https://esphome.io/components/ethernet.html
-##
-## CAPTIVE PORTAL
-## This component enables a Wi-Fi hotspot that can be used to select your Wi-Fi
-## network and add your credentials.
-## more: https://esphome.io/components/captive_portal
-##
-##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
-wifi:
-  ap:
-
-improv_serial:
-captive_portal:
-
-esp32_improv:
-  authorizer: none
-
-##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
-##
-## WEB SEVER
-## This component creates a simple web server on the node that can be accessed 
-## through any browser and a simple REST API. It enables the built-in web server 
-## for viewing the device state, internals and controls via web browser on the 
-## same local network as the device.
-## more: https://esphome.io/components/web_server.html
-##
-##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
-web_server:
-  port: 80
-  version: 3
