@@ -130,7 +130,7 @@ packages:
       - packages/hnap-rev1.2-inputs-29-42.yaml
       - packages/hnap-rev1.2-outputs.yaml
       - packages/hnap-rev1.2-misc-io.yaml
-      - packages/hnap-rev1.2-weigand.yaml
+##      - packages/hnap-rev1.2-weigand.yaml
 
 dashboard_import:
   package_import_url: github://taconsultingllc/hornet-nest-alarm-panel/hnap-rev1.2-wifi.yaml@main
