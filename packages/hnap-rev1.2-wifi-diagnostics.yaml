@@ -76,3 +76,7 @@ switch:
   # This action will cause the board to reboot
   - platform: restart
     name: "Reboot Alarm Panel"
+
+# Define Piezo Buzzer as Output for RTTTL
+rtttl:
+  output: buzzer_output
