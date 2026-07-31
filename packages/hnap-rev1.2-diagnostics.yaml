@@ -18,6 +18,18 @@ sensor:
     id: uptime_sensor
     entity_category: diagnostic
 
+script:
+  - id: update_fault_buzzer
+    then:
+      - if:
+          condition:
+            lambda: |-
+              return id(Fuse12V).state || id(Fuse3V).state;
+          then:
+            - switch.turn_on: buzzer
+          else:
+            - switch.turn_off: buzzer
+
 binary_sensor:
   # Start +12V Fuse Monitoring - On Fuse Blown, Enable Piezo Buzzer
   - platform: gpio
@@ -32,13 +44,7 @@ binary_sensor:
       inverted: false
     device_class: problem
     on_state:
-      if:
-        condition:
-        - binary_sensor.is_on: Fuse12V
-        then:
-        - switch.turn_on: buzzer
-        else:
-        - switch.turn_off: buzzer
+      - script.execute: update_fault_buzzer
     filters:
         - delayed_on_off: $sensor_debounce_time
 
@@ -55,13 +61,7 @@ binary_sensor:
       inverted: true
     device_class: problem
     on_state:
-      if:
-        condition:
-        - binary_sensor.is_on: Fuse3V
-        then:
-        - switch.turn_on: buzzer
-        else:
-        - switch.turn_off: buzzer
+      - script.execute: update_fault_buzzer
     filters:
         - delayed_on_off: $sensor_debounce_time
 
