@@ -54,6 +54,7 @@ binary_sensor:
         input: true
         pullup: false
       inverted: true
+    use_interrupt: false
     filters:
       - delayed_on_off: $sensor_debounce_time
 
@@ -81,6 +82,7 @@ binary_sensor:
         input: true
         pullup: false
       inverted: true
+    use_interrupt: false
     filters:
       - delayed_on_off: $sensor_debounce_time
 
@@ -108,6 +110,7 @@ binary_sensor:
         input: true
         pullup: false
       inverted: true
+    use_interrupt: false
     filters:
       - delayed_on_off: $sensor_debounce_time
 
@@ -135,6 +138,7 @@ binary_sensor:
         input: true
         pullup: false
       inverted: true
+    use_interrupt: false
     filters:
       - delayed_on_off: $sensor_debounce_time
 
@@ -151,6 +155,7 @@ binary_sensor:
         input: true
         pullup: false
       inverted: true
+    use_interrupt: false
     filters:
       - delayed_on_off: $sensor_debounce_time
 
@@ -167,5 +172,6 @@ binary_sensor:
         input: true
         pullup: false
       inverted: true
+    use_interrupt: false
     filters:
       - delayed_on_off: $sensor_debounce_time
