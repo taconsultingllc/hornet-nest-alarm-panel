@@ -70,10 +70,6 @@ sensor:
                 data: 
                   entity_id: button.all_knx_switches
 
-# Define Piezo Buzzer as Output for RTTTL
-rtttl:
-  output: buzzer_output
-
 wiegand:
   - id: mykeypad
     d0: GPIO18 # Green Wire
