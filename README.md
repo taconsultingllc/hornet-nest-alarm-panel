@@ -2,6 +2,15 @@
 
 This repository houses the officially supported **ESPHome** firmware configuration files for the **Hornet Nest Alarm Panel**, developed by **Technology Automation Consulting LLC**. The Hornet Nest Alarm Panel is a scalable and customizable IoT solution designed to integrate traditional wired alarm systems into your smart home using **Home Assistant**. With 42 optoisolated zones, 3 relay outputs, and flexible PoE or 12V power options, it’s built for flexibility and reliability.
 
+[![Where to Buy](https://img.shields.io/badge/Where%20to%20Buy-Direct%20Store%20(Discounted)-blue?style=for-the-badge)](https://byproduct.taconsulting.llc)
+
+## Where to Buy
+
+The **Hornet Nest Alarm Panel** is available for direct purchase from our official store at a reduced price:
+
+* **Official Store:** [byproduct.taconsulting.llc](https://byproduct.taconsulting.llc) *(Direct pricing near original crowdfunding rates — save ~$50 compared to third-party distributors)*
+* **Distributors:** [Crowd Supply](https://www.crowdsupply.com) | [Mouser Electronics](https://www.mouser.com)
+  
 <div style="display: flex; justify-content: space-between;">
   <img src="images/3D_AlarmPanel_2024-10-06.png" alt="3D Model" width="400"/>
   <img src="images/hornet-nest-operational.jpg" alt="Installed" width="400"/>
