@@ -1,3 +1,35 @@
+
+<div align="right">
+  <details>
+    <summary >🌐 Language</summary>
+    <div>
+      <div align="center">
+        <a href="https://openaitx.github.io/view.html?user=taconsultingllc&project=hornet-nest-alarm-panel&lang=en">English</a>
+        | <a href="https://openaitx.github.io/view.html?user=taconsultingllc&project=hornet-nest-alarm-panel&lang=zh-CN">简体中文</a>
+        | <a href="https://openaitx.github.io/view.html?user=taconsultingllc&project=hornet-nest-alarm-panel&lang=zh-TW">繁體中文</a>
+        | <a href="https://openaitx.github.io/view.html?user=taconsultingllc&project=hornet-nest-alarm-panel&lang=ja">日本語</a>
+        | <a href="https://openaitx.github.io/view.html?user=taconsultingllc&project=hornet-nest-alarm-panel&lang=ko">한국어</a>
+        | <a href="https://openaitx.github.io/view.html?user=taconsultingllc&project=hornet-nest-alarm-panel&lang=hi">हिन्दी</a>
+        | <a href="https://openaitx.github.io/view.html?user=taconsultingllc&project=hornet-nest-alarm-panel&lang=th">ไทย</a>
+        | <a href="https://openaitx.github.io/view.html?user=taconsultingllc&project=hornet-nest-alarm-panel&lang=fr">Français</a>
+        | <a href="https://openaitx.github.io/view.html?user=taconsultingllc&project=hornet-nest-alarm-panel&lang=de">Deutsch</a>
+        | <a href="https://openaitx.github.io/view.html?user=taconsultingllc&project=hornet-nest-alarm-panel&lang=es">Español</a>
+        | <a href="https://openaitx.github.io/view.html?user=taconsultingllc&project=hornet-nest-alarm-panel&lang=it">Italiano</a>
+        | <a href="https://openaitx.github.io/view.html?user=taconsultingllc&project=hornet-nest-alarm-panel&lang=ru">Русский</a>
+        | <a href="https://openaitx.github.io/view.html?user=taconsultingllc&project=hornet-nest-alarm-panel&lang=pt">Português</a>
+        | <a href="https://openaitx.github.io/view.html?user=taconsultingllc&project=hornet-nest-alarm-panel&lang=nl">Nederlands</a>
+        | <a href="https://openaitx.github.io/view.html?user=taconsultingllc&project=hornet-nest-alarm-panel&lang=pl">Polski</a>
+        | <a href="https://openaitx.github.io/view.html?user=taconsultingllc&project=hornet-nest-alarm-panel&lang=ar">العربية</a>
+        | <a href="https://openaitx.github.io/view.html?user=taconsultingllc&project=hornet-nest-alarm-panel&lang=fa">فارسی</a>
+        | <a href="https://openaitx.github.io/view.html?user=taconsultingllc&project=hornet-nest-alarm-panel&lang=tr">Türkçe</a>
+        | <a href="https://openaitx.github.io/view.html?user=taconsultingllc&project=hornet-nest-alarm-panel&lang=vi">Tiếng Việt</a>
+        | <a href="https://openaitx.github.io/view.html?user=taconsultingllc&project=hornet-nest-alarm-panel&lang=id">Bahasa Indonesia</a>
+        | <a href="https://openaitx.github.io/view.html?user=taconsultingllc&project=hornet-nest-alarm-panel&lang=as">অসমীয়া</
+      </div>
+    </div>
+  </details>
+</div>
+
 # Hornet Nest Alarm Panel for ESPHome
 
 This repository houses the officially supported **ESPHome** firmware configuration files for the **Hornet Nest Alarm Panel**, developed by **Technology Automation Consulting LLC**. The Hornet Nest Alarm Panel is a scalable and customizable IoT solution designed to integrate traditional wired alarm systems into your smart home using **Home Assistant**. With 42 optoisolated zones, 3 relay outputs, and flexible PoE or 12V power options, it’s built for flexibility and reliability.
