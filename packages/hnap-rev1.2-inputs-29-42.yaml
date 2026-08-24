@@ -11,6 +11,7 @@ binary_sensor:
         input: true
         pullup: false
       inverted: $sensor_inverted
+    use_interrupt: false
     filters:
       - delayed_on_off: $sensor_debounce_time
 
@@ -24,6 +25,7 @@ binary_sensor:
         input: true
         pullup: false
       inverted: $sensor_inverted
+    use_interrupt: false
     filters:
       - delayed_on_off: $sensor_debounce_time
 
@@ -37,6 +39,7 @@ binary_sensor:
         input: true
         pullup: false
       inverted: $sensor_inverted
+    use_interrupt: false
     filters:
       - delayed_on_off: $sensor_debounce_time
 
@@ -50,6 +53,7 @@ binary_sensor:
         input: true
         pullup: false
       inverted: $sensor_inverted
+    use_interrupt: false
     filters:
       - delayed_on_off: $sensor_debounce_time
 
@@ -63,6 +67,7 @@ binary_sensor:
         input: true
         pullup: false
       inverted: $sensor_inverted
+    use_interrupt: false
     filters:
       - delayed_on_off: $sensor_debounce_time
 
@@ -76,6 +81,7 @@ binary_sensor:
         input: true
         pullup: false
       inverted: $sensor_inverted
+    use_interrupt: false
     filters:
       - delayed_on_off: $sensor_debounce_time
 
@@ -89,6 +95,7 @@ binary_sensor:
         input: true
         pullup: false
       inverted: $sensor_inverted
+    use_interrupt: false
     filters:
       - delayed_on_off: $sensor_debounce_time
 
@@ -102,6 +109,7 @@ binary_sensor:
         input: true
         pullup: false
       inverted: $sensor_inverted
+    use_interrupt: false
     filters:
       - delayed_on_off: $sensor_debounce_time
 
@@ -115,6 +123,7 @@ binary_sensor:
         input: true
         pullup: false
       inverted: $sensor_inverted
+    use_interrupt: false
     filters:
       - delayed_on_off: $sensor_debounce_time
 
@@ -128,6 +137,7 @@ binary_sensor:
         input: true
         pullup: false
       inverted: $sensor_inverted
+    use_interrupt: false
     filters:
       - delayed_on_off: $sensor_debounce_time
 
@@ -141,6 +151,7 @@ binary_sensor:
         input: true
         pullup: false
       inverted: $sensor_inverted
+    use_interrupt: false
     filters:
       - delayed_on_off: $sensor_debounce_time
 
@@ -154,6 +165,7 @@ binary_sensor:
         input: true
         pullup: false
       inverted: $sensor_inverted
+    use_interrupt: false
     filters:
       - delayed_on_off: $sensor_debounce_time
 
@@ -167,6 +179,7 @@ binary_sensor:
         input: true
         pullup: false
       inverted: $sensor_inverted
+    use_interrupt: false
     filters:
       - delayed_on_off: $sensor_debounce_time
 
@@ -180,6 +193,7 @@ binary_sensor:
         input: true
         pullup: false
       inverted: $sensor_inverted
+    use_interrupt: false
     filters:
       - delayed_on_off: $sensor_debounce_time
   # End MCP23017 Chip number 3

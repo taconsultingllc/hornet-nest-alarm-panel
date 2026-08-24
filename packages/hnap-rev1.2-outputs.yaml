@@ -97,3 +97,7 @@ output:
   - platform: ledc
     pin: GPIO23
     id: buzzer_output
+
+# Define Piezo Buzzer as Output for RTTTL
+rtttl:
+  output: buzzer_output
