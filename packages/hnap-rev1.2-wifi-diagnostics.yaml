@@ -4,6 +4,7 @@ sensor:
     name: Uptime
     id: uptime_sensor
     entity_category: diagnostic
+    update_interval: 300s
 
   - platform: wifi_signal
     name: WiFi Signal
@@ -24,8 +25,26 @@ text_sensor:
     ip_address:
       name: WiFi IP Address
       entity_category: diagnostic
-      
+  - platform: version
+    name: Version
+    entity_category: diagnostic
+
+script:
+  - id: update_fault_buzzer
+    then:
+      - if:
+          condition:
+            lambda: |-
+              return id(Fuse12V).state || id(Fuse3V).state;
+          then:
+            - switch.turn_on: buzzer
+          else:
+            - switch.turn_off: buzzer
+
 binary_sensor:
+  - platform: status
+    name: Status
+
   # Start +12V Fuse Monitoring - On Fuse Blown, Enable Piezo Buzzer
   - platform: gpio
     id: Fuse12V
@@ -39,13 +58,7 @@ binary_sensor:
       inverted: false
     device_class: problem
     on_state:
-      if:
-        condition:
-        - binary_sensor.is_on: Fuse12V
-        then:
-        - switch.turn_on: buzzer
-        else:
-        - switch.turn_off: buzzer
+      - script.execute: update_fault_buzzer
     filters:
         - delayed_on_off: $sensor_debounce_time
 
@@ -62,21 +75,14 @@ binary_sensor:
       inverted: true
     device_class: problem
     on_state:
-      if:
-        condition:
-        - binary_sensor.is_on: Fuse3V
-        then:
-        - switch.turn_on: buzzer
-        else:
-        - switch.turn_off: buzzer
+      - script.execute: update_fault_buzzer
     filters:
         - delayed_on_off: $sensor_debounce_time
 
-switch:
-  # This action will cause the board to reboot
+button:
   - platform: restart
-    name: "Reboot Alarm Panel"
-
-# Define Piezo Buzzer as Output for RTTTL
-rtttl:
-  output: buzzer_output
+    name: Restart
+    entity_category: diagnostic
+  - platform: safe_mode
+    name: Safe Mode Boot
+    entity_category: diagnostic
